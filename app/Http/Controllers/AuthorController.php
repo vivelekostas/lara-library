@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreAuthorRequest;
 use App\Models\Author;
 use App\Services\AuthorService;
 use App\Traits\RestTrait;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class AuthorController extends Controller
@@ -22,7 +24,7 @@ class AuthorController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function index()
     {
@@ -45,19 +47,20 @@ class AuthorController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param StoreAuthorRequest $request
+     * @return JsonResponse
      */
-    public function store(Request $request)
+    public function store(StoreAuthorRequest $request)
     {
-        //
+        $newAuthor = $this->authorService->storeNewAuthor($request);
+        return $this->getResponse($newAuthor);
     }
 
     /**
      * Display the specified resource.
      *
      * @param  \App\Models\Author  $author
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function show(Author $author)
     {
@@ -78,7 +81,7 @@ class AuthorController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param Request $request
      * @param  \App\Models\Author  $author
      * @return \Illuminate\Http\Response
      */

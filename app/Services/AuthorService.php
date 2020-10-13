@@ -12,4 +12,12 @@ class AuthorService
     {
         return Author::all();
     }
+
+    public function storeNewAuthor($request)
+    {
+        $author = new Author();
+        $author->fill($request->toArray());
+        $author->save();
+        return $author;
+    }
 }

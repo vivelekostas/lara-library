@@ -14,8 +14,7 @@ use Illuminate\Support\Facades\Response;
  */
 trait RestTrait
 {
-//    public function getResponse($data, $httpStatus = 200): JsonResponse
-    public function getResponse($data, $httpStatus = 200)
+    public function getResponse($data, $httpStatus = 200): JsonResponse
     {
         return Response::json($data, $httpStatus);
     }
