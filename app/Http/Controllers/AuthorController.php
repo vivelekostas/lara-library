@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreAuthorRequest;
+use App\Http\Requests\AuthorRequest;
+use App\Http\Requests\UpdateAuthorRequest;
 use App\Models\Author;
 use App\Services\AuthorService;
 use App\Traits\RestTrait;
@@ -37,10 +38,10 @@ class AuthorController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param StoreAuthorRequest $request
+     * @param AuthorRequest $request
      * @return JsonResponse
      */
-    public function store(StoreAuthorRequest $request)
+    public function store(AuthorRequest $request)
     {
         $newAuthor = $this->authorService->storeNewAuthor($request);
         return $this->getResponse([
@@ -69,7 +70,8 @@ class AuthorController extends Controller
      * @param Author $author
      * @return JsonResponse
      */
-    public function update(Request $request, Author $author)
+//    public function update(UpdateAuthorRequest $request, Author $author)
+    public function update(AuthorRequest $request, Author $author)
     {
         $updatedAuthor = $this->authorService->updateAuthor($request, $author);
         return $this->getResponse([
