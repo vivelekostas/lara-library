@@ -35,16 +35,6 @@ class AuthorController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param StoreAuthorRequest $request
@@ -53,51 +43,52 @@ class AuthorController extends Controller
     public function store(StoreAuthorRequest $request)
     {
         $newAuthor = $this->authorService->storeNewAuthor($request);
-        return $this->getResponse($newAuthor);
+        return $this->getResponse([
+            'data' => $newAuthor,
+            'message' => 'author saved successfully'
+        ]);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Author  $author
+     * @param Author $author
      * @return JsonResponse
      */
     public function show(Author $author)
     {
-        return $this->getResponse($author);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Author  $author
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Author $author)
-    {
-        //
+        return $this->getResponse([
+            'data' => $author
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param Request $request
-     * @param  \App\Models\Author  $author
-     * @return \Illuminate\Http\Response
+     * @param Author $author
+     * @return JsonResponse
      */
     public function update(Request $request, Author $author)
     {
-        //
+        $updatedAuthor = $this->authorService->updateAuthor($request, $author);
+        return $this->getResponse([
+            'data' => $updatedAuthor,
+            'message' => 'author updated successfully'
+        ]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Author  $author
-     * @return \Illuminate\Http\Response
+     * @param Author $author
+     * @return JsonResponse
      */
     public function destroy(Author $author)
     {
-        //
+        $this->authorService->destroyAuthor($author->id);
+        return $this->getResponse([
+             'message' => 'author deleted successfully'
+        ]);
     }
 }
