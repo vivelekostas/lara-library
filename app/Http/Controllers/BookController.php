@@ -2,84 +2,93 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BookRequest;
 use App\Models\Book;
+use App\Services\BookService;
+use App\Traits\RestTrait;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class BookController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    use RestTrait;
+
+    protected $bookService;
+
+    // подключаю сервис
+    public function __construct(BookService $bookService)
     {
-        //
+        $this->bookService = $bookService;
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
-    public function create()
+    public function index()
     {
-        //
+        $books = $this->bookService->getBooks();
+        return $this->getResponse([
+           'data' => $books
+        ]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return JsonResponse
      */
-    public function store(Request $request)
+    public function store(BookRequest $request)
     {
-        //
+        $newBook = $this->bookService->storeNewAuthor($request);
+        return $this->getResponse([
+           'data' => $newBook,
+           'message' => 'new book created successfully'
+        ]);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Book  $book
-     * @return \Illuminate\Http\Response
+     * @param Book $book
+     * @return JsonResponse
      */
     public function show(Book $book)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Book  $book
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Book $book)
-    {
-        //
+        return $this->getResponse([
+            'data' => $book
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Book  $book
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param Book $book
+     * @return JsonResponse
      */
-    public function update(Request $request, Book $book)
+    public function update(BookRequest $request, Book $book)
     {
-        //
+        $updateBooke = $this->bookService->updateBook($request, $book);
+        return $this->getResponse([
+            'data' => $updateBooke,
+            'message' => 'book updated successfully'
+        ]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Book  $book
-     * @return \Illuminate\Http\Response
+     * @param Book $book
+     * @return JsonResponse
      */
     public function destroy(Book $book)
     {
-        //
+        $this->bookService->destroyBook($book->id);
+        return $this->getResponse([
+            'message' => 'book deleted successfully'
+        ]);
     }
 }

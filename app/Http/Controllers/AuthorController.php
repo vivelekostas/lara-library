@@ -3,12 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AuthorRequest;
-use App\Http\Requests\UpdateAuthorRequest;
 use App\Models\Author;
 use App\Services\AuthorService;
 use App\Traits\RestTrait;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class AuthorController extends Controller
 {
@@ -66,11 +64,11 @@ class AuthorController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
+     * @param AuthorRequest $request
      * @param Author $author
      * @return JsonResponse
      */
-//    public function update(UpdateAuthorRequest $request, Author $author)
+
     public function update(AuthorRequest $request, Author $author)
     {
         $updatedAuthor = $this->authorService->updateAuthor($request, $author);

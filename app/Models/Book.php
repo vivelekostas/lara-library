@@ -9,6 +9,8 @@ class Book extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['name', 'pages', 'creator_id'];
+
     public function creator()
     {
         return $this->belongsTo('App\Models\Author', 'creator_id');
