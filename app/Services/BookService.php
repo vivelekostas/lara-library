@@ -4,8 +4,8 @@
 namespace App\Services;
 
 
+use App\Http\Requests\BookRequest;
 use App\Models\Book;
-use App\Models\Rating;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 
@@ -22,10 +22,10 @@ class BookService
 
     /**
      * Сохраняет новую книгу, для экшена store.
-     * @param $request
+     * @param BookRequest $request
      * @return Book
      */
-    public function storeNewAuthor($request)
+    public function storeNewBook(BookRequest $request): Book
     {
         $newBook = new Book();
         $newBook->fill($request->toArray());
@@ -35,11 +35,12 @@ class BookService
 
     /**
      * Обновляет книгу, для экшена update
-     * @param $request
+     * @param BookRequest $request
      * @param Book $book
      * @return Book
      */
-    public function updateBook($request, Book $book): Book
+
+    public function updateBook(BookRequest $request, Book $book): Book
     {
         $book->fill($request->toArray());
         $book->save();

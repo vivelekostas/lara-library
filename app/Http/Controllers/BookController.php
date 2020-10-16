@@ -7,7 +7,6 @@ use App\Models\Book;
 use App\Services\BookService;
 use App\Traits\RestTrait;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class BookController extends Controller
 {
@@ -37,12 +36,12 @@ class BookController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
+     * @param BookRequest $request
      * @return JsonResponse
      */
     public function store(BookRequest $request)
     {
-        $newBook = $this->bookService->storeNewAuthor($request);
+        $newBook = $this->bookService->storeNewBook($request);
         return $this->getResponse([
            'data' => $newBook,
            'message' => 'new book created successfully'

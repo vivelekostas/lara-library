@@ -56,6 +56,8 @@ class AuthorController extends Controller
      */
     public function show(Author $author)
     {
+        $rating = $this->authorService->getRating($author);
+        $author->rating = $rating;
         return $this->getResponse([
             'data' => $author
         ]);

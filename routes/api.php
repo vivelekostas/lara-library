@@ -25,7 +25,7 @@ Route::get('/index', function () {
     return 'лололо! Работает!';
 });
 
-Route::post('/rating', [RatingController::class, 'store'])->name('rating.store');
+Route::post('/rating', [RatingController::class, 'store']);
 
 Route::resource('/authors', AuthorController::class);
 Route::resource('/books', BookController::class);
