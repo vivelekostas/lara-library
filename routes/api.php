@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\RatingController;
+use App\Http\Controllers\SearchController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,6 +27,8 @@ Route::get('/index', function () {
 });
 
 Route::post('/rating', [RatingController::class, 'store']);
+
+Route::get('/search', SearchController::class);
 
 Route::resource('/authors', AuthorController::class);
 Route::resource('/books', BookController::class);
