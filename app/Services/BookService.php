@@ -5,7 +5,9 @@ namespace App\Services;
 
 
 use App\Models\Book;
+use App\Models\Rating;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\DB;
 
 class BookService
 {
@@ -31,7 +33,13 @@ class BookService
         return $newBook;
     }
 
-    public function updateBook($request, $book)
+    /**
+     * Обновляет книгу, для экшена update
+     * @param $request
+     * @param Book $book
+     * @return Book
+     */
+    public function updateBook($request, Book $book): Book
     {
         $book->fill($request->toArray());
         $book->save();
@@ -45,5 +53,21 @@ class BookService
     public function destroyBook($id)
     {
         Book::destroy($id);
+    }
+
+    /**
+     * Возвращает рейтинг книги.
+     * @param Book $book
+     * @return float|int|mixed
+     */
+    public function getRating(Book $book)
+    {
+        $ratingQuery = DB::table('ratings')
+            ->where('entity_id', $book->id)
+            ->where('entity_type', Book::BOOK)
+            ->get();
+        $rating = $ratingQuery->avg('rating');
+
+        return $rating;
     }
 }

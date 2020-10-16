@@ -57,6 +57,8 @@ class BookController extends Controller
      */
     public function show(Book $book)
     {
+        $rating = $this->bookService->getRating($book);
+        $book->rating = $rating;
         return $this->getResponse([
             'data' => $book
         ]);
@@ -65,7 +67,7 @@ class BookController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
+     * @param BookRequest $request
      * @param Book $book
      * @return JsonResponse
      */

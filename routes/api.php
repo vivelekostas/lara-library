@@ -4,6 +4,7 @@ use App\Http\Controllers\BookController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthorController;
+use App\Http\Controllers\RatingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,6 +24,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('/index', function () {
     return 'лололо! Работает!';
 });
+
+Route::post('/rating', [RatingController::class, 'store'])->name('rating.store');
 
 Route::resource('/authors', AuthorController::class);
 Route::resource('/books', BookController::class);
