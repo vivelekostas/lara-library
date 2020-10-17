@@ -12,7 +12,7 @@ class AuthorController extends Controller
 {
     use RestTrait;
 
-    public $authorService;
+    private $authorService;
 
     // подключаю сервис
     public function __construct(AuthorService $authorService)

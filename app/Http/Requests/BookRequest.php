@@ -22,29 +22,19 @@ class BookRequest extends FormRequest
      *
      * @return array
      */
-//    public function rules()
-//    {
-//        return [
-//            'name' => 'required|unique:books,name',
-//            'pages' => 'required',
-//            'creator_id' => 'required'
-//        ];
-//    }
     public function rules()
     {
         if ($this->getMethod() == 'POST') {
             return [
-                'name' => 'required|unique:books,name',
+                'title' => 'required|unique:books,title',
                 'pages' => 'required',
                 'creator_id' => 'required'
             ];
         }
 
-//        dd('olololo');
-//        dd($this->route('book'));
         $book = $this->route('book');
         return [
-            'name' => [
+            'title' => [
                 'required',
                 Rule::unique('books')->ignore($book->id)
             ],

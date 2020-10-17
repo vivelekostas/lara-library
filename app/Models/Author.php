@@ -11,7 +11,7 @@ class Author extends Model
 
     public const AUTHOR = 1;
 
-    protected $fillable = ['name', 'last_name', 'biography'];
+    protected $fillable = ['name', 'biography'];
 
     public function books()
     {

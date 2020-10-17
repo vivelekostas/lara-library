@@ -12,7 +12,7 @@ class BookController extends Controller
 {
     use RestTrait;
 
-    protected $bookService;
+    private $bookService;
 
     // подключаю сервис
     public function __construct(BookService $bookService)

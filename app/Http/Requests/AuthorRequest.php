@@ -25,7 +25,6 @@ class AuthorRequest extends FormRequest
     {
         return [
             'name' => 'required|max:100',
-            'last_name' => 'required|max:100',
             'biography' => 'required'
         ];
     }

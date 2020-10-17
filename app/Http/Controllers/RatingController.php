@@ -7,7 +7,7 @@ use App\Models\Rating;
 
 class RatingController extends Controller
 {
-    public function store(RatingRequest $request)
+    public function __invoke(RatingRequest $request)
     {
         $rating = new Rating();
         $rating->fill($request->toArray());

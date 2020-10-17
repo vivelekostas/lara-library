@@ -11,7 +11,7 @@ class Book extends Model
 
     public const BOOK = 2;
 
-    protected $fillable = ['name', 'pages', 'creator_id'];
+    protected $fillable = ['title', 'pages', 'creator_id'];
 
     public function creator()
     {
