@@ -12,7 +12,7 @@ class BookController extends Controller
 {
     use RestTrait;
 
-    private $bookService;
+    private BookService $bookService;
 
     // подключаю сервис
     public function __construct(BookService $bookService)
@@ -23,13 +23,14 @@ class BookController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param BookRequest $request
      * @return JsonResponse
      */
-    public function index()
+    public function index(BookRequest $request): JsonResponse
     {
-        $books = $this->bookService->getBooks();
+        $books = $this->bookService->getBooksWithRating($request);
         return $this->getResponse([
-           'data' => $books
+            'data' => $books
         ]);
     }
 
@@ -39,12 +40,12 @@ class BookController extends Controller
      * @param BookRequest $request
      * @return JsonResponse
      */
-    public function store(BookRequest $request)
+    public function store(BookRequest $request): JsonResponse
     {
         $newBook = $this->bookService->storeNewBook($request);
         return $this->getResponse([
-           'data' => $newBook,
-           'message' => 'new book created successfully'
+            'data' => $newBook,
+            'message' => 'new book created successfully'
         ]);
     }
 
@@ -54,7 +55,7 @@ class BookController extends Controller
      * @param Book $book
      * @return JsonResponse
      */
-    public function show(Book $book)
+    public function show(Book $book): JsonResponse
     {
         $rating = $this->bookService->getRating($book);
         $book->rating = $rating;
@@ -70,11 +71,11 @@ class BookController extends Controller
      * @param Book $book
      * @return JsonResponse
      */
-    public function update(BookRequest $request, Book $book)
+    public function update(BookRequest $request, Book $book): JsonResponse
     {
-        $updateBooke = $this->bookService->updateBook($request, $book);
+        $updateBook = $this->bookService->updateBook($request, $book);
         return $this->getResponse([
-            'data' => $updateBooke,
+            'data' => $updateBook,
             'message' => 'book updated successfully'
         ]);
     }
@@ -85,7 +86,7 @@ class BookController extends Controller
      * @param Book $book
      * @return JsonResponse
      */
-    public function destroy(Book $book)
+    public function destroy(Book $book): JsonResponse
     {
         $this->bookService->destroyBook($book->id);
         return $this->getResponse([

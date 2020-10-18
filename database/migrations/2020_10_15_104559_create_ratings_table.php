@@ -17,7 +17,7 @@ class CreateRatingsTable extends Migration
             $table->id();
             $table->bigInteger('entity_id');
             $table->enum('entity_type', [1, 2]);
-            $table->tinyInteger('rating');
+            $table->tinyInteger('rating')->nullable();
             $table->timestamps();
         });
     }

@@ -6,6 +6,7 @@ namespace App\Services;
 
 use App\Http\Requests\AuthorRequest;
 use App\Models\Author;
+use App\Models\Rating;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -34,6 +35,13 @@ class AuthorService
         $newAuthor = new Author();
         $newAuthor->fill($request->toArray());
         $newAuthor->save();
+
+        Rating::create([
+            'entity_id' => $newAuthor->id,
+            'entity_type' => Author::AUTHOR,
+            'rating' => null
+        ]);
+
         return $newAuthor;
     }
 

@@ -1,23 +1,36 @@
 <?php
 
-
 namespace App\Services;
-
 
 use App\Http\Requests\BookRequest;
 use App\Models\Book;
+use App\Models\Rating;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 
 class BookService
 {
     /**
-     * Возвращает коллекцию книг, для экшена index.
-     * @return Book[]|Collection
+     * Возвращает коллекцию книг c рейтингом (отсортированную или нет), для экшена index.
+     * @param BookRequest $request
+     * @return Collection
      */
-    public function getBooks()
+    public function getBooksWithRating(BookRequest $request)
     {
-        return Book::all();
+        $books = Book::booksWithRating();
+
+        if ($request->sort_by) {
+            $books = $books->orderBy('otsenka', $request->sort_by);
+        }
+
+        $books->get();
+
+        foreach ($books as $book) {
+            $rating = round($book->otsenka,1);
+            $book->otsenka = $rating;
+        }
+
+        return $books;
     }
 
     /**
@@ -30,6 +43,13 @@ class BookService
         $newBook = new Book();
         $newBook->fill($request->toArray());
         $newBook->save();
+
+        Rating::create([
+            'entity_id' => $newBook->id,
+            'entity_type' => Book::BOOK,
+            'rating' => null
+        ]);
+
         return $newBook;
     }
 

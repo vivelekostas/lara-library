@@ -32,6 +32,12 @@ class BookRequest extends FormRequest
             ];
         }
 
+        if ($this->getMethod() == 'GET') {
+            return [
+                'sort_by' => 'in:desc,asc'
+            ];
+        }
+
         $book = $this->route('book');
         return [
             'title' => [
