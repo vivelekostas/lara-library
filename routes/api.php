@@ -31,5 +31,6 @@ Route::post('/rating', RatingController::class);
 Route::get('/search', SearchController::class);
 
 Route::resource('/authors', AuthorController::class);
+
 Route::resource('/books', BookController::class);
 

@@ -64,6 +64,7 @@ class BookService
     {
         $book->fill($request->toArray());
         $book->save();
+
         return $book;
     }
 

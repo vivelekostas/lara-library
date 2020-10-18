@@ -7,6 +7,7 @@ namespace App\Services;
 use App\Http\Requests\AuthorRequest;
 use App\Models\Author;
 use App\Models\Rating;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -18,7 +19,7 @@ class AuthorService
 {
     /**
      * Возвращает коллекцию авторов, для экшена index.
-     * @return Author[]|\Illuminate\Database\Eloquent\Collection
+     * @return Author[]|Collection
      */
     public function getAuthors()
     {
@@ -55,6 +56,7 @@ class AuthorService
     {
         $author->fill($request->toArray());
         $author->save();
+
         return $author;
     }
 

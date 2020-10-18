@@ -12,7 +12,8 @@ class BookController extends Controller
 {
     use RestTrait;
 
-    private BookService $bookService;
+
+    private $bookService;
 
     // подключаю сервис
     public function __construct(BookService $bookService)
@@ -29,6 +30,7 @@ class BookController extends Controller
     public function index(BookRequest $request): JsonResponse
     {
         $books = $this->bookService->getBooksWithRating($request);
+
         return $this->getResponse([
             'data' => $books
         ]);
@@ -43,6 +45,7 @@ class BookController extends Controller
     public function store(BookRequest $request): JsonResponse
     {
         $newBook = $this->bookService->storeNewBook($request);
+
         return $this->getResponse([
             'data' => $newBook,
             'message' => 'new book created successfully'
@@ -59,6 +62,7 @@ class BookController extends Controller
     {
         $rating = $this->bookService->getRating($book);
         $book->rating = $rating;
+
         return $this->getResponse([
             'data' => $book
         ]);
@@ -74,6 +78,7 @@ class BookController extends Controller
     public function update(BookRequest $request, Book $book): JsonResponse
     {
         $updateBook = $this->bookService->updateBook($request, $book);
+
         return $this->getResponse([
             'data' => $updateBook,
             'message' => 'book updated successfully'
@@ -89,6 +94,7 @@ class BookController extends Controller
     public function destroy(Book $book): JsonResponse
     {
         $this->bookService->destroyBook($book->id);
+
         return $this->getResponse([
             'message' => 'book deleted successfully'
         ]);

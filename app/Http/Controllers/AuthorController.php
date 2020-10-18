@@ -25,9 +25,10 @@ class AuthorController extends Controller
      *
      * @return JsonResponse
      */
-    public function index()
+    public function index(): JsonResponse
     {
         $authors = $this->authorService->getAuthors();
+
         return  $this->getResponse([
             'data' => $authors,
         ]);
@@ -39,9 +40,10 @@ class AuthorController extends Controller
      * @param AuthorRequest $request
      * @return JsonResponse
      */
-    public function store(AuthorRequest $request)
+    public function store(AuthorRequest $request): JsonResponse
     {
         $newAuthor = $this->authorService->storeNewAuthor($request);
+
         return $this->getResponse([
             'data' => $newAuthor,
             'message' => 'author saved successfully'
@@ -54,12 +56,14 @@ class AuthorController extends Controller
      * @param Author $author
      * @return JsonResponse
      */
-    public function show(Author $author)
+    public function show(Author $author): JsonResponse
     {
         $rating = $this->authorService->getRating($author);
         $author->rating = $rating;
+        $author->books;
+
         return $this->getResponse([
-            'data' => $author
+            'data' => $author,
         ]);
     }
 
@@ -71,9 +75,10 @@ class AuthorController extends Controller
      * @return JsonResponse
      */
 
-    public function update(AuthorRequest $request, Author $author)
+    public function update(AuthorRequest $request, Author $author): JsonResponse
     {
         $updatedAuthor = $this->authorService->updateAuthor($request, $author);
+
         return $this->getResponse([
             'data' => $updatedAuthor,
             'message' => 'author updated successfully'
@@ -86,9 +91,10 @@ class AuthorController extends Controller
      * @param Author $author
      * @return JsonResponse
      */
-    public function destroy(Author $author)
+    public function destroy(Author $author): JsonResponse
     {
         $this->authorService->destroyAuthor($author->id);
+
         return $this->getResponse([
              'message' => 'author deleted successfully'
         ]);
