@@ -17,13 +17,13 @@ class BookService
      */
     public function getBooksWithRating(BookRequest $request)
     {
-        $books = Book::booksWithRating();
+        $booksQuery = Book::booksWithRating(); //тут объект билдер
 
         if ($request->sort_by) {
-            $books = $books->orderBy('otsenka', $request->sort_by);
+            $booksQuery = $booksQuery->orderBy('otsenka', $request->sort_by);
         }
 
-        $books->get();
+        $books = $booksQuery->get();
 
         foreach ($books as $book) {
             $rating = round($book->otsenka,1);
