@@ -6,7 +6,6 @@ use App\Http\Requests\BookRequest;
 use App\Models\Book;
 use App\Models\Rating;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Facades\DB;
 
 class BookService
 {
@@ -81,6 +80,6 @@ class BookService
      */
     public function getRating(Book $book)
     {
-        return $book->ratings->avg('rating');
+        return round($book->ratings()->avg('rating'),2);
     }
 }
