@@ -23,15 +23,8 @@ class Book extends Model
         return $this->belongsTo('App\Models\Author', 'creator_id');
     }
 
-    /**
-     * @param Builder $query
-     * @return Builder
-     */
-    public function scopeBooksWithRating(Builder $query)
+    public function ratings()
     {
-        return $query->select(DB::raw('`books`.`id`, `books`.`title`, `books`.`pages`, AVG(`rating`) as otsenka'))
-            ->leftJoin('ratings', 'books.id', '=', 'ratings.entity_id')
-            ->where('ratings.entity_type', '=', self::BOOK)
-            ->groupBy('books.title');
+        return $this->morphMany(Rating::class, 'ratingable');
     }
 }

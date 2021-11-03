@@ -38,8 +38,8 @@ class AuthorService
         $newAuthor->save();
 
         Rating::create([
-            'entity_id' => $newAuthor->id,
-            'entity_type' => Author::AUTHOR,
+            'ratingable_id' => $newAuthor->id,
+            'ratingable_type' => Author::AUTHOR,
             'rating' => null
         ]);
 
@@ -77,8 +77,8 @@ class AuthorService
     public function getRating(Author $author)
     {
         $ratingQuery = DB::table('ratings')
-            ->where('entity_id', $author->id)
-            ->where('entity_type', Author::AUTHOR)
+            ->where('ratingable_id', $author->id)
+            ->where('ratingable_type', Author::AUTHOR)
             ->get();
         $rating = $ratingQuery->avg('rating');
 

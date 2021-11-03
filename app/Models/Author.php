@@ -17,4 +17,9 @@ class Author extends Model
     {
         return $this->hasMany('App\Models\Book', 'creator_id');
     }
+
+    public function ratings()
+    {
+        return $this->morphMany(Rating::class, 'ratingable');
+    }
 }

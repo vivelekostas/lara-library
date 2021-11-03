@@ -17,17 +17,14 @@ class BookService
      */
     public function getBooksWithRating(BookRequest $request)
     {
-        $booksQuery = Book::booksWithRating(); //тут объект билдер
-
-        if ($request->sort_by) {
-            $booksQuery = $booksQuery->orderBy('otsenka', $request->sort_by);
-        }
-
-        $books = $booksQuery->get();
+        $books = Book::with('ratings')->get(); //тут объект билдер
 
         foreach ($books as $book) {
-            $rating = round($book->otsenka,1);
-            $book->otsenka = $rating;
+            $book->rating = $this->getRating($book);
+        }
+
+        if ($request->sort_by) {
+            $books = $books->sortByDesc('rating');
         }
 
         return $books;
@@ -45,8 +42,8 @@ class BookService
         $newBook->save();
 
         Rating::create([
-            'entity_id' => $newBook->id,
-            'entity_type' => Book::BOOK,
+            'ratingable_id' => $newBook->id,
+            'ratingable_type' => Book::BOOK,
             'rating' => null
         ]);
 
@@ -84,12 +81,6 @@ class BookService
      */
     public function getRating(Book $book)
     {
-        $ratingQuery = DB::table('ratings')
-            ->where('entity_id', $book->id)
-            ->where('entity_type', Book::BOOK)
-            ->get();
-        $rating = $ratingQuery->avg('rating');
-
-        return $rating;
+        return $book->ratings->avg('rating');
     }
 }

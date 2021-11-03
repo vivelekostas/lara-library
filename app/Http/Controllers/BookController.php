@@ -60,8 +60,7 @@ class BookController extends Controller
      */
     public function show(Book $book): JsonResponse
     {
-        $rating = $this->bookService->getRating($book);
-        $book->rating = $rating;
+        $book->rating = $this->bookService->getRating($book);
 
         return $this->getResponse([
             'data' => $book
