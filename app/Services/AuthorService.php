@@ -33,13 +33,9 @@ class AuthorService
      */
     public function storeNewAuthor(AuthorRequest $request): Author
     {
-        $newAuthor = new Author();
-        $newAuthor->fill($request->toArray());
-        $newAuthor->save();
+        $newAuthor = Author::create($request->toArray());
 
-        Rating::create([
-            'ratingable_id' => $newAuthor->id,
-            'ratingable_type' => Author::AUTHOR,
+        $newAuthor->ratings()->create([
             'rating' => null
         ]);
 
@@ -65,8 +61,25 @@ class AuthorService
      * @param $id
      */
     public function destroyAuthor($id)
+//    public function destroyAuthor($author)
     {
-        Author::destroy($id);
+//        dump('удаление!');
+//        dump($id);
+
+//        $author = Author::find($id);
+//        dump($author);
+//        dump($author->ratings);
+//       $ratings = $author->ratings;
+//       $ratingsId = $ratings->pluck('id');
+//       DB::table('ratings')
+//           ->whereIn('id', $ratingsId->toArray())
+//           ->where('ratingable_type', Author::class)
+//           ->delete();
+
+//       dump($ratingsId);
+
+//        die();
+//        Author::destroy($id);
     }
 
     /**
@@ -76,12 +89,6 @@ class AuthorService
      */
     public function getRating(Author $author)
     {
-        $ratingQuery = DB::table('ratings')
-            ->where('ratingable_id', $author->id)
-            ->where('ratingable_type', Author::AUTHOR)
-            ->get();
-        $rating = $ratingQuery->avg('rating');
-
-        return $rating;
+        return round($author->ratings()->avg('rating'),2);
     }
 }

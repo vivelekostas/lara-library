@@ -36,13 +36,9 @@ class BookService
      */
     public function storeNewBook(BookRequest $request): Book
     {
-        $newBook = new Book();
-        $newBook->fill($request->toArray());
-        $newBook->save();
+        $newBook = Book::create($request->toArray());
 
-        Rating::create([
-            'ratingable_id' => $newBook->id,
-            'ratingable_type' => Book::BOOK,
+        $newBook->ratings()->create([
             'rating' => null
         ]);
 

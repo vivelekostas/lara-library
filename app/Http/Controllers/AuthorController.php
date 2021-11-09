@@ -46,7 +46,7 @@ class AuthorController extends Controller
 
         return $this->getResponse([
             'data' => $newAuthor,
-            'message' => 'author saved successfully'
+            'message' => 'new author created successfully'
         ]);
     }
 
