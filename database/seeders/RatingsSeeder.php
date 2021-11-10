@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\Author;
 use App\Models\Book;
-use App\Models\Rating;
 use Illuminate\Database\Seeder;
 
 class RatingsSeeder extends Seeder
@@ -17,52 +16,36 @@ class RatingsSeeder extends Seeder
     public function run()
     {
         $uathor = Author::find(1);
-        Rating::create([
-            'ratingable_id' => $uathor->id,
-            'ratingable_type' => Author::AUTHOR,
+        $uathor->ratings()->create([
             'rating' => null
         ]);
         $uathor = Author::find(2);
-        Rating::create([
-            'ratingable_id' => $uathor->id,
-            'ratingable_type' => Author::AUTHOR,
+        $uathor->ratings()->create([
             'rating' => null
         ]);
         $uathor = Author::find(3);
-        Rating::create([
-            'ratingable_id' => $uathor->id,
-            'ratingable_type' => Author::AUTHOR,
+        $uathor->ratings()->create([
             'rating' => null
         ]);
 
         $book = Book::find(1);
-        Rating::create([
-            'ratingable_id' => $book->id,
-            'ratingable_type' => Book::BOOK,
+        $book->ratings()->create([
             'rating' => null
         ]);
         $book = Book::find(2);
-        Rating::create([
-            'ratingable_id' => $book->id,
-            'ratingable_type' => Book::BOOK,
+        $book->ratings()->create([
             'rating' => null
         ]);
         $book = Book::find(3);
-        Rating::create([
-            'ratingable_id' => $book->id,
-            'ratingable_type' => Book::BOOK,
+        $book->ratings()->create([
             'rating' => null
         ]);
         $book = Book::find(4);
-        Rating::create([
-            'ratingable_id' => $book->id,
-            'ratingable_type' => Book::BOOK,
+        $book->ratings()->create([
             'rating' => null
         ]);
         $book = Book::find(5);
-        Rating::create([
-            'ratingable_id' => $book->id,
-            'ratingable_type' => Book::BOOK,
+        $book->ratings()->create([
             'rating' => null
         ]);
     }

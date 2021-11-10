@@ -15,7 +15,6 @@ class BookController extends Controller
 
     private $bookService;
 
-    // подключаю сервис
     public function __construct(BookService $bookService)
     {
         $this->bookService = $bookService;
@@ -29,7 +28,15 @@ class BookController extends Controller
      */
     public function index(BookRequest $request): JsonResponse
     {
-        $books = $this->bookService->getBooksWithRating($request);
+        if ($request->sort_by) {
+            $books = $this->bookService->getBooksByRating($request);
+
+            return $this->getResponse([
+                'data' => $books
+            ]);
+        }
+
+        $books = $this->bookService->getBooksByTitle();
 
         return $this->getResponse([
             'data' => $books

@@ -14,7 +14,6 @@ class AuthorController extends Controller
 
     private $authorService;
 
-    // подключаю сервис
     public function __construct(AuthorService $authorService)
     {
         $this->authorService = $authorService;
@@ -23,14 +22,23 @@ class AuthorController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param $request
      * @return JsonResponse
      */
-    public function index(): JsonResponse
+    public function index(AuthorRequest $request): JsonResponse
     {
-        $authors = $this->authorService->getAuthors();
+        if ($request->sort_by) {
+            $authors = $this->authorService->getAuthorsByRating($request);
 
-        return  $this->getResponse([
-            'data' => $authors,
+            return $this->getResponse([
+                'data' => $authors
+            ]);
+        }
+
+        $authors = $this->authorService->getAuthorsByName();
+
+        return $this->getResponse([
+            'data' => $authors
         ]);
     }
 
@@ -96,7 +104,7 @@ class AuthorController extends Controller
         $this->authorService->destroyAuthor($author->id);
 
         return $this->getResponse([
-             'message' => 'author deleted successfully'
+            'message' => 'author deleted successfully'
         ]);
     }
 }

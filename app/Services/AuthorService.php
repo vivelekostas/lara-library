@@ -3,27 +3,49 @@
 
 namespace App\Services;
 
-
 use App\Http\Requests\AuthorRequest;
 use App\Models\Author;
-use App\Models\Rating;
+use App\Traits\RatingTrait;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Facades\DB;
 
-/**
- * Обслуживает AuthorController.
- * Class AuthorService
- * @package App\Services
- */
+
 class AuthorService
 {
+
+    use RatingTrait;
+
     /**
      * Возвращает коллекцию авторов, для экшена index.
      * @return Author[]|Collection
      */
-    public function getAuthors()
+    public function getAuthorsByRating($request)
     {
-        return Author::all();
+        $authors = Author::all();
+
+        foreach ($authors as $author) {
+            $author->rating = $this->getRating($author);
+        }
+
+        if ($request->sort_by === 'desc') {
+            return $authors->sortByDesc('rating');
+        }
+
+        return $authors->sortBy('rating', SORT_NATURAL);
+    }
+
+    /**
+     * Возвращает авторов в алфавитном порядке
+     * @return Author[]|Collection
+     */
+    public function getAuthorsByName()
+    {
+        $authors = Author::all();
+
+        foreach ($authors as $author) {
+            $author->rating = $this->getRating($author);
+        }
+
+        return $authors->sortBy('name', SORT_NATURAL);
     }
 
     /**
@@ -61,34 +83,10 @@ class AuthorService
      * @param $id
      */
     public function destroyAuthor($id)
-//    public function destroyAuthor($author)
     {
-//        dump('удаление!');
-//        dump($id);
-
-//        $author = Author::find($id);
-//        dump($author);
-//        dump($author->ratings);
-//       $ratings = $author->ratings;
-//       $ratingsId = $ratings->pluck('id');
-//       DB::table('ratings')
-//           ->whereIn('id', $ratingsId->toArray())
-//           ->where('ratingable_type', Author::class)
-//           ->delete();
-
-//       dump($ratingsId);
-
-//        die();
-//        Author::destroy($id);
-    }
-
-    /**
-     * ВОзвращает рейтинг автора.
-     * @param Author $author
-     * @return float|int|mixed
-     */
-    public function getRating(Author $author)
-    {
-        return round($author->ratings()->avg('rating'),2);
+        $author = Author::find($id);
+        $author->ratings()->delete();
+        $author->books()->delete();
+        $author->delete();
     }
 }

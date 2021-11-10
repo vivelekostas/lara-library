@@ -4,29 +4,47 @@ namespace App\Services;
 
 use App\Http\Requests\BookRequest;
 use App\Models\Book;
-use App\Models\Rating;
+use App\Traits\RatingTrait;
 use Illuminate\Database\Eloquent\Collection;
 
 class BookService
 {
+
+    use RatingTrait;
+
     /**
-     * Возвращает коллекцию книг c рейтингом (отсортированную или нет), для экшена index.
+     * Возвращает коллекцию книг отсортированную по рейтингу (desc\asc), для экшена index.
      * @param BookRequest $request
      * @return Collection
      */
-    public function getBooksWithRating(BookRequest $request)
+    public function getBooksByRating(BookRequest $request)
     {
-        $books = Book::with('ratings')->get(); //тут объект билдер
+        $books = Book::all();
 
         foreach ($books as $book) {
             $book->rating = $this->getRating($book);
         }
 
-        if ($request->sort_by) {
-            $books = $books->sortByDesc('rating');
+        if ($request->sort_by === 'desc') {
+            return $books->sortByDesc('rating');
         }
 
-        return $books;
+        return $books->sortBy('rating', SORT_NATURAL);
+    }
+
+    /**
+     * Возвращает книги в алфавитном порядке
+     * @return Book[]|Collection
+     */
+    public function getBooksByTitle()
+    {
+        $books = Book::all();
+
+        foreach ($books as $book) {
+            $book->rating = $this->getRating($book);
+        }
+
+        return $books->sortBy('title', SORT_NATURAL);
     }
 
     /**
@@ -66,16 +84,8 @@ class BookService
      */
     public function destroyBook($id)
     {
-        Book::destroy($id);
-    }
-
-    /**
-     * Возвращает рейтинг книги.
-     * @param Book $book
-     * @return float|int|mixed
-     */
-    public function getRating(Book $book)
-    {
-        return round($book->ratings()->avg('rating'),2);
+        $book = Book::find($id);
+        $book->ratings()->delete();
+        $book->delete();
     }
 }
