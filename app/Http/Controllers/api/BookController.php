@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\api;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\BookRequest;
 use App\Models\Book;
 use App\Services\BookService;
@@ -11,7 +12,6 @@ use Illuminate\Http\JsonResponse;
 class BookController extends Controller
 {
     use RestTrait;
-
 
     private $bookService;
 

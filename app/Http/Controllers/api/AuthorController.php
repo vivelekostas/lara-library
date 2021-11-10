@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\api;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\AuthorRequest;
 use App\Models\Author;
 use App\Services\AuthorService;
@@ -22,8 +23,7 @@ class AuthorController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param $request
-     * @return JsonResponse
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index(AuthorRequest $request): JsonResponse
     {
@@ -45,8 +45,8 @@ class AuthorController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param AuthorRequest $request
-     * @return JsonResponse
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(AuthorRequest $request): JsonResponse
     {
@@ -61,8 +61,8 @@ class AuthorController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param Author $author
-     * @return JsonResponse
+     * @param  \App\Models\Author  $author
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show(Author $author): JsonResponse
     {
@@ -78,11 +78,10 @@ class AuthorController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param AuthorRequest $request
-     * @param Author $author
-     * @return JsonResponse
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Author  $author
+     * @return \Illuminate\Http\JsonResponse
      */
-
     public function update(AuthorRequest $request, Author $author): JsonResponse
     {
         $updatedAuthor = $this->authorService->updateAuthor($request, $author);
@@ -96,8 +95,8 @@ class AuthorController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param Author $author
-     * @return JsonResponse
+     * @param  \App\Models\Author  $author
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Author $author): JsonResponse
     {
