@@ -22,4 +22,9 @@ class Author extends Model
     {
         return $this->morphMany(Rating::class, 'ratingable');
     }
+
+    public function scopeSearchInName($query, $needle)
+    {
+        $query->where('name', 'like', "%$needle%");
+    }
 }

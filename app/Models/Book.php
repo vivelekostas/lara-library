@@ -27,4 +27,9 @@ class Book extends Model
     {
         return $this->morphMany(Rating::class, 'ratingable');
     }
+
+    public function scopeSearchInTitle($query, $needle)
+    {
+        $query->where('title', 'like', "%$needle%");
+    }
 }

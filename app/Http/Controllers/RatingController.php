@@ -9,8 +9,6 @@ class RatingController extends Controller
 {
     public function __invoke(RatingRequest $request)
     {
-        $rating = new Rating();
-        $rating->fill($request->toArray());
-        $rating->save();
+        Rating::create($request->toArray());
     }
 }
