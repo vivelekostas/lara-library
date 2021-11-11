@@ -15,7 +15,7 @@ class AuthorService
     use RatingTrait;
 
     /**
-     * Возвращает коллекцию авторов, для экшена index.
+     * Возвращает кол-цию авторов отсоритрованных по рейтингу, для экшена index.
      * @return Author[]|Collection
      */
     public function getAuthorsByRating($request)
@@ -49,7 +49,7 @@ class AuthorService
     }
 
     /**
-     * Сохраняет нового автора, для экшена store.
+     * Сохраняет нового автора и добавляет ему рейтинг. Для экшена store.
      * @param AuthorRequest $request
      * @return Author
      */

@@ -21,7 +21,7 @@ class AuthorController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Display a listing of the resource. Отображает либо по рейтингу, либо по Имени автора в алфавитном порядке.
      *
      * @return \Illuminate\Http\JsonResponse
      */
@@ -59,7 +59,7 @@ class AuthorController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified resource. Возвращает автора вместе с его книгами.
      *
      * @param  \App\Models\Author  $author
      * @return \Illuminate\Http\JsonResponse
@@ -93,7 +93,7 @@ class AuthorController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Удаляет автора вместе с его книгами и рейтингом.
      *
      * @param  \App\Models\Author  $author
      * @return \Illuminate\Http\JsonResponse

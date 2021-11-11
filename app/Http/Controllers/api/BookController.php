@@ -21,7 +21,7 @@ class BookController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Возвращает список книг либо по рейтингу, либо по Названию в алфавитном порядке.
      *
      * @param BookRequest $request
      * @return JsonResponse

@@ -48,7 +48,7 @@ class BookService
     }
 
     /**
-     * Сохраняет новую книгу, для экшена store.
+     * Сохраняет новую книгу, добавляя рейтинг. Для экшена store.
      * @param BookRequest $request
      * @return Book
      */
@@ -79,7 +79,7 @@ class BookService
     }
 
     /**
-     * Удаляет книгу для экшена destroy
+     * Удаляет книгу и ё рейтинг для экшена destroy
      * @param $id
      */
     public function destroyBook($id)
