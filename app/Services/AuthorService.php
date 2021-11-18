@@ -55,7 +55,7 @@ class AuthorService
      */
     public function storeNewAuthor(AuthorRequest $request): Author
     {
-        $newAuthor = Author::create($request->toArray());
+        $newAuthor = Author::create($request->all());
 
         $newAuthor->ratings()->create([
             'rating' => null
@@ -80,11 +80,10 @@ class AuthorService
 
     /**
      * Удаляет автора для экшена destroy
-     * @param $id
+     * @param $author
      */
-    public function destroyAuthor($id)
+    public function destroyAuthor($author)
     {
-        $author = Author::find($id);
         $author->ratings()->delete();
         $author->books()->delete();
         $author->delete();

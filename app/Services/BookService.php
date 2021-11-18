@@ -54,7 +54,7 @@ class BookService
      */
     public function storeNewBook(BookRequest $request): Book
     {
-        $newBook = Book::create($request->toArray());
+        $newBook = Book::create($request->all());
 
         $newBook->ratings()->create([
             'rating' => null
@@ -80,11 +80,10 @@ class BookService
 
     /**
      * Удаляет книгу и ё рейтинг для экшена destroy
-     * @param $id
+     * @param $book
      */
-    public function destroyBook($id)
+    public function destroyBook($book)
     {
-        $book = Book::find($id);
         $book->ratings()->delete();
         $book->delete();
     }

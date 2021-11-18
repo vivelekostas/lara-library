@@ -35,3 +35,8 @@ Route::apiResources([
     '/books' => BookController::class,
 ]);
 
+Route::fallback(function () {
+    return response()->json([
+        'response' => 'Ты кто такой? Давай, до свиданья!'
+    ]);
+});
