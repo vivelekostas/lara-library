@@ -15,19 +15,6 @@ class RatingsSeeder extends Seeder
      */
     public function run()
     {
-        $uathor = Author::find(1);
-        $uathor->ratings()->create([
-            'rating' => null
-        ]);
-        $uathor = Author::find(2);
-        $uathor->ratings()->create([
-            'rating' => null
-        ]);
-        $uathor = Author::find(3);
-        $uathor->ratings()->create([
-            'rating' => null
-        ]);
-
         $book = Book::find(1);
         $book->ratings()->create([
             'rating' => null

@@ -77,15 +77,4 @@ class AuthorService
 
         return $author;
     }
-
-    /**
-     * Удаляет автора для экшена destroy
-     * @param $author
-     */
-    public function destroyAuthor($author)
-    {
-        $author->ratings()->delete();
-        $author->books()->delete();
-        $author->delete();
-    }
 }

@@ -17,16 +17,22 @@ class AuthorsSeeder extends Seeder
         Author::create([
             'name' => 'Достоевский Федор Михайлович',
             'biography' => 'Очень крутой писатель'
+        ])->ratings()->create([
+            'rating' => null
         ]);
 
         Author::create([
             'name' => 'Чехов Антон Павлович',
             'biography' => 'Тоже очень крутой писатель'
+        ])->ratings()->create([
+            'rating' => null
         ]);
 
         Author::create([
             'name' => 'Лондон Джек',
             'biography' => 'Очень суровый писатель'
+        ])->ratings()->create([
+            'rating' => null
         ]);
     }
 }

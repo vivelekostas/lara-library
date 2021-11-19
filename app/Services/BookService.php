@@ -77,14 +77,4 @@ class BookService
 
         return $book;
     }
-
-    /**
-     * Удаляет книгу и ё рейтинг для экшена destroy
-     * @param $book
-     */
-    public function destroyBook($book)
-    {
-        $book->ratings()->delete();
-        $book->delete();
-    }
 }
