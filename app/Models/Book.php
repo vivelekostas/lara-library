@@ -16,6 +16,8 @@ class Book extends Model
 
     protected $fillable = ['title', 'pages', 'creator_id'];
 
+    public $hidden = ['created_at', 'updated_at'];
+
     public function creator()
     {
         return $this->belongsTo('App\Models\Author', 'creator_id');
