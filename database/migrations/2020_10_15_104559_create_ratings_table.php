@@ -18,7 +18,6 @@ class CreateRatingsTable extends Migration
             $table->tinyInteger('rating')->nullable();
             $table->bigInteger('ratingable_id');
             $table->string('ratingable_type');
-            $table->timestamps();
         });
     }
 

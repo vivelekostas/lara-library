@@ -9,6 +9,8 @@ class Rating extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
+
     protected $fillable = ['ratingable_id', 'ratingable_type', 'rating'];
 
     public function ratingable()

@@ -66,9 +66,7 @@ class AuthorController extends Controller
      */
     public function show(Author $author): JsonResponse
     {
-        $rating = $this->authorService->getRating($author);
-        $author->rating = $rating;
-        $author->books;
+        $author = $this->authorService->getAuthorInfo($author);
 
         return $this->getResponse([
             'data' => $author,

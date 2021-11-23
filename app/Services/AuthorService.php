@@ -49,6 +49,20 @@ class AuthorService
     }
 
     /**
+     * Возвращает автора с его рейтингом и книгами.
+     * @param $author
+     * @return mixed
+     */
+    public function getAuthorInfo($author)
+    {
+        $rating = $this->getRating($author);
+        $author->rating = $rating;
+        $author->books;
+
+        return $author;
+    }
+
+    /**
      * Сохраняет нового автора и добавляет ему рейтинг. Для экшена store.
      * @param AuthorRequest $request
      * @return Author
@@ -72,8 +86,7 @@ class AuthorService
      */
     public function updateAuthor(AuthorRequest $request, Author $author): Author
     {
-        $author->fill($request->toArray());
-        $author->save();
+        $author->update($request->all());
 
         return $author;
     }

@@ -48,6 +48,20 @@ class BookService
     }
 
     /**
+     * Возвращает книгу с её рейтингом и автором.
+     * @param $book
+     * @return mixed
+     */
+    public function getBookInfo($book)
+    {
+        $rating = $this->getRating($book);
+        $book->rating = $rating;
+        $book->author = $book->creator->name;
+
+        return $book;
+    }
+
+    /**
      * Сохраняет новую книгу, добавляя рейтинг. Для экшена store.
      * @param BookRequest $request
      * @return Book
@@ -72,8 +86,7 @@ class BookService
 
     public function updateBook(BookRequest $request, Book $book): Book
     {
-        $book->fill($request->toArray());
-        $book->save();
+        $book->update($request->all());
 
         return $book;
     }
