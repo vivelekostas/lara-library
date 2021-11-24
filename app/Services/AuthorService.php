@@ -3,6 +3,7 @@
 
 namespace App\Services;
 
+use App\Events\AuthorDeleted;
 use App\Http\Requests\AuthorRequest;
 use App\Models\Author;
 use App\Traits\RatingTrait;
@@ -89,5 +90,14 @@ class AuthorService
         $author->update($request->all());
 
         return $author;
+    }
+
+    /**
+     * @param $author
+     */
+    public function deleteAuthorsWithBooksAndRaitings($author)
+    {
+        event(new AuthorDeleted($author));
+        $author->delete();
     }
 }

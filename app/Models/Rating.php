@@ -19,4 +19,9 @@ class Rating extends Model
         return $this->morphTo();
     }
 
+    public function scopeGetRatingsOfEntity($query, $model)
+    {
+        $query->where('ratingable_id', $model->id)
+            ->where('ratingable_type', $model->getMorphClass());
+    }
 }

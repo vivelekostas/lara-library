@@ -99,7 +99,7 @@ class BookController extends Controller
      */
     public function destroy(Book $book): JsonResponse
     {
-        $book->delete();
+        $this->bookService->deleteBookWithRaiting($book);
 
         return $this->getResponse([
             'message' => 'book deleted successfully'

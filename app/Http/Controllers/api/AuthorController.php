@@ -98,10 +98,10 @@ class AuthorController extends Controller
      */
     public function destroy(Author $author): JsonResponse
     {
-        $author->delete();
+        $this->authorService->deleteAuthorsWithBooksAndRaitings($author);
 
         return $this->getResponse([
-            'message' => 'author deleted successfully'
+            'message' => 'author and all his books deleted successfully'
         ]);
     }
 }

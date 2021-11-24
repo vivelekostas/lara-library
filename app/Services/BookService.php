@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Events\BookDeleted;
 use App\Http\Requests\BookRequest;
 use App\Models\Book;
 use App\Traits\RatingTrait;
@@ -89,5 +90,14 @@ class BookService
         $book->update($request->all());
 
         return $book;
+    }
+
+    /**
+     * @param $book
+     */
+    public function deleteBookWithRaiting($book)
+    {
+        event(new BookDeleted($book));
+        $book->delete();
     }
 }
