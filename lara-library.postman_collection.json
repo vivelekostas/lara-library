@@ -14,18 +14,20 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/authors",
-							"protocol": "http",
+							"raw": "{{LIBRARY}}api/authors",
 							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
+								"{{LIBRARY}}api"
 							],
-							"port": "8000",
 							"path": [
-								"api",
 								"authors"
+							],
+							"query": [
+								{
+									"key": "sort_by",
+									"value": "desc",
+									"description": "desc/asc",
+									"disabled": true
+								}
 							]
 						}
 					},
@@ -44,12 +46,12 @@
 							"formdata": [
 								{
 									"key": "name",
-									"value": "Мавлянов Руслан",
+									"value": "Бродский Кобзон Виссарионович",
 									"type": "text"
 								},
 								{
 									"key": "biography",
-									"value": "Повелитель Magento",
+									"value": "лорем ипсум",
 									"type": "text"
 								}
 							]
@@ -78,7 +80,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/authors/1",
+							"raw": "http://127.0.0.1:8000/api/authors/2",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -90,7 +92,7 @@
 							"path": [
 								"api",
 								"authors",
-								"1"
+								"2"
 							]
 						}
 					},
@@ -106,7 +108,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\":\"Достоевский Федор Михайлович\",\r\n    \"biography\": \"Очень крутой писатель, ну очень\"\r\n}\r\n   \r\n",
+							"raw": "{\r\n    \"name\":\"Достоевский Федор Михайлович\",\r\n    \"biography\": \"Очень крутой писатель, ну очень 11111 Пушка\"\r\n}\r\n   \r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -138,7 +140,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/authors/3",
+							"raw": "http://127.0.0.1:8000/api/authors/1",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -150,14 +152,13 @@
 							"path": [
 								"api",
 								"authors",
-								"3"
+								"1"
 							]
 						}
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "Books",
@@ -178,7 +179,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{LIBRARY}}api/books?sort_by=desc",
+							"raw": "{{LIBRARY}}api/books",
 							"host": [
 								"{{LIBRARY}}api"
 							],
@@ -189,7 +190,8 @@
 								{
 									"key": "sort_by",
 									"value": "desc",
-									"description": "(desc/asc)"
+									"description": "(desc/asc)",
+									"disabled": true
 								}
 							]
 						}
@@ -209,17 +211,17 @@
 							"formdata": [
 								{
 									"key": "title",
-									"value": "Как стоя на гвоздях принимать гостей",
+									"value": "Лондон в средние века",
 									"type": "text"
 								},
 								{
 									"key": "pages",
-									"value": "326",
+									"value": "526",
 									"type": "text"
 								},
 								{
 									"key": "creator_id",
-									"value": "4",
+									"value": "2",
 									"type": "text"
 								}
 							]
@@ -271,7 +273,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"title\":\"Как стоя на гвоздях принимать гостей\",\r\n    \"pages\": \"357\",\r\n    \"creator_id\": \"3\"\r\n}\r\n   ",
+							"raw": "{\r\n    \"title\":\"Как стоя на гвоздях принимать гостей\",\r\n    \"pages\": \"357\",\r\n    \"creator_id\": \"2\"\r\n}\r\n   ",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -297,20 +299,19 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{LIBRARY}}api/books/6",
+							"raw": "{{LIBRARY}}api/books/3",
 							"host": [
 								"{{LIBRARY}}api"
 							],
 							"path": [
 								"books",
-								"6"
+								"3"
 							]
 						}
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "Rating",
@@ -327,20 +328,20 @@
 							"mode": "formdata",
 							"formdata": [
 								{
-									"key": "entity_id",
-									"value": "4",
+									"key": "ratingable_id",
+									"value": "3",
 									"description": "id автора/книги",
 									"type": "text"
 								},
 								{
-									"key": "entity_type",
-									"value": "2",
-									"description": "1 - автор, 2 - книга",
+									"key": "ratingable_type",
+									"value": "App\\Models\\Author ",
+									"description": "Author / Book",
 									"type": "text"
 								},
 								{
 									"key": "rating",
-									"value": "5",
+									"value": "4",
 									"description": "от 1 до 5",
 									"type": "text"
 								}
@@ -358,19 +359,25 @@
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "Search",
 			"item": [
 				{
 					"name": "search",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
 						"method": "GET",
 						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
 						"url": {
-							"raw": "{{LIBRARY}}api/search?key=Лонд",
+							"raw": "{{LIBRARY}}api/search?key=Лондон",
 							"host": [
 								"{{LIBRARY}}api"
 							],
@@ -380,16 +387,27 @@
 							"query": [
 								{
 									"key": "key",
-									"value": "Лонд"
+									"value": "Лондон",
+									"description": "По умлолчанию ищет ключ и в книгах и в авторах"
+								},
+								{
+									"key": "authors",
+									"value": "1",
+									"description": "Только в авторах",
+									"disabled": true
+								},
+								{
+									"key": "books",
+									"value": "1",
+									"description": "Только в книгах",
+									"disabled": true
 								}
 							]
 						}
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		}
-	],
-	"protocolProfileBehavior": {}
+	]
 }

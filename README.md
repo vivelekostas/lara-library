@@ -7,6 +7,12 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
+## About the TEST application
+
+Задача: реализовать API библиотеки на Laravel с книгами их авторами, рейтингом и поиском.
+
+Сущности Автора (полный круд) и Книги (полный круд) связанны связью один ко многим. Рейтинг связан с Автором и Книгой полиморфным отношением, через промежуточную таблицу. Бизнес-логика Автора и Книги вынесена в соответствующие сервисы, трейты и события ("тонкий контроллер"). Создание новых объектов валидируется через формреквесты.  Первоначальная загрузка данных реализована через сиды. Поиск работает по названию и имени книги и автора, как вместе, так и по отдельности. В модели, помимо связей, добавлял локальные скоупы, а в ресурсных контроллерах использованы нетерпеливую загрузку (экшены index).
+
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
