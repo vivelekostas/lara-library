@@ -24,8 +24,8 @@ class RatingRequest extends FormRequest
     public function rules()
     {
         return [
-            'entity_id' => 'required|integer',
-            'entity_type' => 'required|integer|between:1,2',
+            'ratingable_id' => 'required|integer',
+            'ratingable_type' => 'required',
             'rating' => 'required|integer|between:1,5',
         ];
     }

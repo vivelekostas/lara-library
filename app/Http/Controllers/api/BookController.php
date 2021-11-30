@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\api;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\BookRequest;
 use App\Models\Book;
 use App\Services\BookService;
@@ -12,24 +13,30 @@ class BookController extends Controller
 {
     use RestTrait;
 
-
     private $bookService;
 
-    // подключаю сервис
     public function __construct(BookService $bookService)
     {
         $this->bookService = $bookService;
     }
 
     /**
-     * Display a listing of the resource.
+     * Возвращает список книг либо по рейтингу, либо по Названию в алфавитном порядке.
      *
      * @param BookRequest $request
      * @return JsonResponse
      */
     public function index(BookRequest $request): JsonResponse
     {
-        $books = $this->bookService->getBooksWithRating($request);
+        if ($request->sort_by) {
+            $books = $this->bookService->getBooksByRating($request);
+
+            return $this->getResponse([
+                'data' => $books
+            ]);
+        }
+
+        $books = $this->bookService->getBooksByTitle();
 
         return $this->getResponse([
             'data' => $books
@@ -60,8 +67,7 @@ class BookController extends Controller
      */
     public function show(Book $book): JsonResponse
     {
-        $rating = $this->bookService->getRating($book);
-        $book->rating = $rating;
+        $book = $this->bookService->getBookInfo($book);
 
         return $this->getResponse([
             'data' => $book
@@ -93,7 +99,7 @@ class BookController extends Controller
      */
     public function destroy(Book $book): JsonResponse
     {
-        $this->bookService->destroyBook($book->id);
+        $this->bookService->deleteBookWithRaiting($book);
 
         return $this->getResponse([
             'message' => 'book deleted successfully'

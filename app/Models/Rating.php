@@ -9,5 +9,19 @@ class Rating extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['entity_id', 'entity_type', 'rating'];
+    public $timestamps = false;
+
+    protected $fillable = ['ratingable_id', 'ratingable_type', 'rating'];
+
+    public function ratingable()
+
+    {
+        return $this->morphTo();
+    }
+
+    public function scopeGetRatingsOfEntity($query, $model)
+    {
+        $query->where('ratingable_id', $model->id)
+            ->where('ratingable_type', $model->getMorphClass());
+    }
 }

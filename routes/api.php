@@ -1,11 +1,11 @@
 <?php
 
-use App\Http\Controllers\BookController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\RatingController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\api\AuthorController;
+use App\Http\Controllers\api\BookController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,7 +30,13 @@ Route::post('/rating', RatingController::class);
 
 Route::get('/search', SearchController::class);
 
-Route::resource('/authors', AuthorController::class);
+Route::apiResources([
+    '/authors' => AuthorController::class,
+    '/books' => BookController::class,
+]);
 
-Route::resource('/books', BookController::class);
-
+Route::fallback(function () {
+    return response()->json([
+        'response' => 'Ты кто такой? Давай, до свиданья!'
+    ]);
+});

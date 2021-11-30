@@ -14,24 +14,22 @@ class Book extends Model
 {
     use HasFactory;
 
-    public const BOOK = 2;
-
     protected $fillable = ['title', 'pages', 'creator_id'];
+
+    public $hidden = ['created_at', 'updated_at', 'ratings', 'creator'];
 
     public function creator()
     {
         return $this->belongsTo('App\Models\Author', 'creator_id');
     }
 
-    /**
-     * @param Builder $query
-     * @return Builder
-     */
-    public function scopeBooksWithRating(Builder $query)
+    public function ratings()
     {
-        return $query->select(DB::raw('`books`.`id`, `books`.`title`, `books`.`pages`, AVG(`rating`) as otsenka'))
-            ->leftJoin('ratings', 'books.id', '=', 'ratings.entity_id')
-            ->where('ratings.entity_type', '=', self::BOOK)
-            ->groupBy('books.title');
+        return $this->morphMany(Rating::class, 'ratingable');
+    }
+
+    public function scopeSearchInTitle($query, $needle)
+    {
+        $query->where('title', 'like', "%$needle%");
     }
 }

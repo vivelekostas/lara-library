@@ -18,7 +18,9 @@ class CreateBooksTable extends Migration
             $table->string('title', 150);
             $table->string('pages');
             $table->unsignedBigInteger('creator_id');
-            $table->foreign('creator_id')->references('id')->on('authors');
+            $table->foreign('creator_id')->references('id')->on('authors')
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
             $table->timestamps();
         });
     }

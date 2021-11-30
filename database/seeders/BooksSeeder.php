@@ -15,14 +15,21 @@ class BooksSeeder extends Seeder
     public function run()
     {
         $author = Author::find(1);
-        $author->books()->create(['title' => 'Идиот', 'pages' => '892']);
-        $author->books()->create(['title' => 'Подросток', 'pages' => '762']);
+        $author->books()->createMany([
+            ['title' => 'Идиот', 'pages' => '892'],
+            ['title' => 'Подросток', 'pages' => '762'],
+        ]);
 
         $author = Author::find(2);
-        $author->books()->create(['title' => 'Чайка', 'pages' => '550']);
-        $author->books()->create(['title' => 'Убийство', 'pages' => '67']);
+        $author->books()->createMany([
+            ['title' => 'Чайка', 'pages' => '550'],
+            ['title' => 'Убийство', 'pages' => '67']
+        ]);
 
         $author = Author::find(3);
-        $author->books()->create(['title' => 'Воля к жизни', 'pages' => '457']);
+        $author->books()->createMany([
+            ['title' => 'Воля к жизни', 'pages' => '457'],
+            ['title' => 'Мартин Иден', 'pages' => '687']
+        ]);
     }
 }

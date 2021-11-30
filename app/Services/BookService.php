@@ -2,51 +2,73 @@
 
 namespace App\Services;
 
+use App\Events\BookDeleted;
 use App\Http\Requests\BookRequest;
 use App\Models\Book;
-use App\Models\Rating;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Facades\DB;
 
 class BookService
 {
     /**
-     * Возвращает коллекцию книг c рейтингом (отсортированную или нет), для экшена index.
+     * Возвращает коллекцию книг отсортированную по рейтингу (desc\asc), для экшена index.
      * @param BookRequest $request
      * @return Collection
      */
-    public function getBooksWithRating(BookRequest $request)
+    public function getBooksByRating(BookRequest $request)
     {
-        $booksQuery = Book::booksWithRating(); //тут объект билдер
-
-        if ($request->sort_by) {
-            $booksQuery = $booksQuery->orderBy('otsenka', $request->sort_by);
-        }
-
-        $books = $booksQuery->get();
+        $books = Book::with('ratings', 'creator')->get();
 
         foreach ($books as $book) {
-            $rating = round($book->otsenka,1);
-            $book->otsenka = $rating;
+            $book->rating = $book->ratings->avg('rating');
+            $book->author = $book->creator->name;
         }
 
-        return $books;
+        if ($request->sort_by === 'desc') {
+            return $books->sortByDesc('rating');
+        }
+
+        return $books->sortBy('rating', SORT_NATURAL);
     }
 
     /**
-     * Сохраняет новую книгу, для экшена store.
+     * Возвращает книги в алфавитном порядке
+     * @return Book[]|Collection
+     */
+    public function getBooksByTitle()
+    {
+        $books = Book::with('ratings', 'creator')->get();
+
+        foreach ($books as $book) {
+            $book->rating = $book->ratings->avg('rating');
+            $book->author = $book->creator->name;
+        }
+
+        return $books->sortBy('title', SORT_NATURAL);
+    }
+
+    /**
+     * Возвращает книгу с её рейтингом и автором.
+     * @param $book
+     * @return mixed
+     */
+    public function getBookInfo($book)
+    {
+        $book->rating = $book->ratings->avg('rating');
+        $book->author = $book->creator->name;
+
+        return $book;
+    }
+
+    /**
+     * Сохраняет новую книгу, добавляя рейтинг. Для экшена store.
      * @param BookRequest $request
      * @return Book
      */
     public function storeNewBook(BookRequest $request): Book
     {
-        $newBook = new Book();
-        $newBook->fill($request->toArray());
-        $newBook->save();
+        $newBook = Book::create($request->all());
 
-        Rating::create([
-            'entity_id' => $newBook->id,
-            'entity_type' => Book::BOOK,
+        $newBook->ratings()->create([
             'rating' => null
         ]);
 
@@ -62,34 +84,17 @@ class BookService
 
     public function updateBook(BookRequest $request, Book $book): Book
     {
-        $book->fill($request->toArray());
-        $book->save();
+        $book->update($request->all());
 
         return $book;
     }
 
     /**
-     * Удаляет книгу для экшена destroy
-     * @param $id
+     * @param $book
      */
-    public function destroyBook($id)
+    public function deleteBookWithRaiting($book)
     {
-        Book::destroy($id);
-    }
-
-    /**
-     * Возвращает рейтинг книги.
-     * @param Book $book
-     * @return float|int|mixed
-     */
-    public function getRating(Book $book)
-    {
-        $ratingQuery = DB::table('ratings')
-            ->where('entity_id', $book->id)
-            ->where('entity_type', Book::BOOK)
-            ->get();
-        $rating = $ratingQuery->avg('rating');
-
-        return $rating;
+        event(new BookDeleted($book));
+        $book->delete();
     }
 }

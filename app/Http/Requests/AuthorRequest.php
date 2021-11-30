@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class AuthorRequest extends FormRequest
 {
@@ -23,9 +24,26 @@ class AuthorRequest extends FormRequest
      */
     public function rules()
     {
+        if ($this->getMethod() == 'POST') {
+            return [
+                'name' => 'required|max:100',
+                'biography' => 'required'
+            ];
+        }
+
+        if ($this->getMethod() == 'GET') {
+            return [
+                'sort_by' => 'in:desc,asc'
+            ];
+        }
+
+        $author = $this->route('author');
         return [
-            'name' => 'required|max:100',
-            'biography' => 'required'
+            'name' => [
+                'required',
+                Rule::unique('authors')->ignore($author->id)
+            ],
+            'biography' => 'required',
         ];
     }
 }

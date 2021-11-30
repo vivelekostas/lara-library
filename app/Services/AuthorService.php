@@ -3,43 +3,71 @@
 
 namespace App\Services;
 
-
+use App\Events\AuthorDeleted;
 use App\Http\Requests\AuthorRequest;
 use App\Models\Author;
-use App\Models\Rating;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Facades\DB;
 
-/**
- * Обслуживает AuthorController.
- * Class AuthorService
- * @package App\Services
- */
+
 class AuthorService
 {
     /**
-     * Возвращает коллекцию авторов, для экшена index.
+     * Возвращает кол-цию авторов отсоритрованных по рейтингу, для экшена index.
      * @return Author[]|Collection
      */
-    public function getAuthors()
+    public function getAuthorsByRating($request)
     {
-        return Author::all();
+        $authors = Author::with('ratings')->get();
+
+        foreach ($authors as $author) {
+            $author->rating = $author->ratings->avg('rating');
+        }
+
+        if ($request->sort_by === 'desc') {
+            return $authors->sortByDesc('rating');
+        }
+
+        return $authors->sortBy('rating', SORT_NATURAL);
     }
 
     /**
-     * Сохраняет нового автора, для экшена store.
+     * Возвращает авторов в алфавитном порядке
+     * @return Author[]|Collection
+     */
+    public function getAuthorsByName()
+    {
+        $authors = Author::with('ratings')->get();
+
+        foreach ($authors as $author) {
+            $author->rating = $author->ratings->avg('rating');
+        }
+
+        return $authors->sortBy('name', SORT_NATURAL);
+    }
+
+    /**
+     * Возвращает автора с его рейтингом и книгами.
+     * @param $author
+     * @return mixed
+     */
+    public function getAuthorInfo($author)
+    {
+        $author->rating = $author->ratings->avg('rating');
+        $author->books;
+
+        return $author;
+    }
+
+    /**
+     * Сохраняет нового автора и добавляет ему рейтинг. Для экшена store.
      * @param AuthorRequest $request
      * @return Author
      */
     public function storeNewAuthor(AuthorRequest $request): Author
     {
-        $newAuthor = new Author();
-        $newAuthor->fill($request->toArray());
-        $newAuthor->save();
+        $newAuthor = Author::create($request->all());
 
-        Rating::create([
-            'entity_id' => $newAuthor->id,
-            'entity_type' => Author::AUTHOR,
+        $newAuthor->ratings()->create([
             'rating' => null
         ]);
 
@@ -54,34 +82,17 @@ class AuthorService
      */
     public function updateAuthor(AuthorRequest $request, Author $author): Author
     {
-        $author->fill($request->toArray());
-        $author->save();
+        $author->update($request->all());
 
         return $author;
     }
 
     /**
-     * Удаляет автора для экшена destroy
-     * @param $id
+     * @param $author
      */
-    public function destroyAuthor($id)
+    public function deleteAuthorsWithBooksAndRaitings($author)
     {
-        Author::destroy($id);
-    }
-
-    /**
-     * ВОзвращает рейтинг автора.
-     * @param Author $author
-     * @return float|int|mixed
-     */
-    public function getRating(Author $author)
-    {
-        $ratingQuery = DB::table('ratings')
-            ->where('entity_id', $author->id)
-            ->where('entity_type', Author::AUTHOR)
-            ->get();
-        $rating = $ratingQuery->avg('rating');
-
-        return $rating;
+        event(new AuthorDeleted($author));
+        $author->delete();
     }
 }

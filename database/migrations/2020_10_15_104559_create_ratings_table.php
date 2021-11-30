@@ -15,10 +15,9 @@ class CreateRatingsTable extends Migration
     {
         Schema::create('ratings', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('entity_id');
-            $table->enum('entity_type', [1, 2]);
             $table->tinyInteger('rating')->nullable();
-            $table->timestamps();
+            $table->bigInteger('ratingable_id');
+            $table->string('ratingable_type');
         });
     }
 

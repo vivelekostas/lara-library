@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Author;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class AuthorsSeeder extends Seeder
 {
@@ -14,15 +14,17 @@ class AuthorsSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('authors')->insert([
-           'name' => 'Достоевский Федор Михайлович',
-           'biography' => 'Очень крутой писатель'
+        Author::create([
+            'name' => 'Достоевский Федор Михайлович',
+            'biography' => 'Очень крутой писатель'
         ]);
-        DB::table('authors')->insert([
+
+        Author::create([
             'name' => 'Чехов Антон Павлович',
             'biography' => 'Тоже очень крутой писатель'
         ]);
-        DB::table('authors')->insert([
+
+        Author::create([
             'name' => 'Лондон Джек',
             'biography' => 'Очень суровый писатель'
         ]);

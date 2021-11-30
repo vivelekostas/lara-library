@@ -4,7 +4,8 @@
 namespace App\Services;
 
 
-use Illuminate\Support\Facades\DB;
+use App\Models\Author;
+use App\Models\Book;
 
 class SearchService
 {
@@ -12,13 +13,20 @@ class SearchService
     {
         $searchResult = [];
 
-        $authorResult = DB::table('authors',)
-            ->where('authors.name', 'like', "%$request->key%")
-            ->get();
+        if ($request->authors) {
+            $authorResult = Author::searchInName($request->key)->get();
 
-        $bookResult = DB::table('books')
-            ->where('books.title', 'like', "%$request->key%")
-            ->get();
+            return $searchResult['authors'] = $authorResult;
+        }
+
+        if ($request->books) {
+            $bookResult = Book::searchInTitle($request->key)->get();
+
+            return $searchResult['books'] = $bookResult;
+        }
+
+        $authorResult = Author::searchInName($request->key)->get();
+        $bookResult = Book::SearchInTitle($request->key)->get();
 
         $searchResult['authors'] = $authorResult;
         $searchResult['books'] = $bookResult;
