@@ -27,6 +27,9 @@ class BooksSeeder extends Seeder
         ]);
 
         $author = Author::find(3);
-        $author->books()->create(['title' => 'Воля к жизни', 'pages' => '457']);
+        $author->books()->createMany([
+            ['title' => 'Воля к жизни', 'pages' => '457'],
+            ['title' => 'Мартин Иден', 'pages' => '687']
+        ]);
     }
 }

@@ -5,14 +5,10 @@ namespace App\Services;
 use App\Events\BookDeleted;
 use App\Http\Requests\BookRequest;
 use App\Models\Book;
-use App\Traits\RatingTrait;
 use Illuminate\Database\Eloquent\Collection;
 
 class BookService
 {
-
-    use RatingTrait;
-
     /**
      * Возвращает коллекцию книг отсортированную по рейтингу (desc\asc), для экшена index.
      * @param BookRequest $request
@@ -20,10 +16,11 @@ class BookService
      */
     public function getBooksByRating(BookRequest $request)
     {
-        $books = Book::all();
+        $books = Book::with('ratings', 'creator')->get();
 
         foreach ($books as $book) {
-            $book->rating = $this->getRating($book);
+            $book->rating = $book->ratings->avg('rating');
+            $book->author = $book->creator->name;
         }
 
         if ($request->sort_by === 'desc') {
@@ -39,10 +36,11 @@ class BookService
      */
     public function getBooksByTitle()
     {
-        $books = Book::all();
+        $books = Book::with('ratings', 'creator')->get();
 
         foreach ($books as $book) {
-            $book->rating = $this->getRating($book);
+            $book->rating = $book->ratings->avg('rating');
+            $book->author = $book->creator->name;
         }
 
         return $books->sortBy('title', SORT_NATURAL);
@@ -55,8 +53,7 @@ class BookService
      */
     public function getBookInfo($book)
     {
-        $rating = $this->getRating($book);
-        $book->rating = $rating;
+        $book->rating = $book->ratings->avg('rating');
         $book->author = $book->creator->name;
 
         return $book;

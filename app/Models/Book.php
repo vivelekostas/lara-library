@@ -16,7 +16,7 @@ class Book extends Model
 
     protected $fillable = ['title', 'pages', 'creator_id'];
 
-    public $hidden = ['created_at', 'updated_at'];
+    public $hidden = ['created_at', 'updated_at', 'ratings', 'creator'];
 
     public function creator()
     {

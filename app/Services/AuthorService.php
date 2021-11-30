@@ -6,25 +6,21 @@ namespace App\Services;
 use App\Events\AuthorDeleted;
 use App\Http\Requests\AuthorRequest;
 use App\Models\Author;
-use App\Traits\RatingTrait;
 use Illuminate\Database\Eloquent\Collection;
 
 
 class AuthorService
 {
-
-    use RatingTrait;
-
     /**
      * Возвращает кол-цию авторов отсоритрованных по рейтингу, для экшена index.
      * @return Author[]|Collection
      */
     public function getAuthorsByRating($request)
     {
-        $authors = Author::all();
+        $authors = Author::with('ratings')->get();
 
         foreach ($authors as $author) {
-            $author->rating = $this->getRating($author);
+            $author->rating = $author->ratings->avg('rating');
         }
 
         if ($request->sort_by === 'desc') {
@@ -40,10 +36,10 @@ class AuthorService
      */
     public function getAuthorsByName()
     {
-        $authors = Author::all();
+        $authors = Author::with('ratings')->get();
 
         foreach ($authors as $author) {
-            $author->rating = $this->getRating($author);
+            $author->rating = $author->ratings->avg('rating');
         }
 
         return $authors->sortBy('name', SORT_NATURAL);
@@ -56,8 +52,7 @@ class AuthorService
      */
     public function getAuthorInfo($author)
     {
-        $rating = $this->getRating($author);
-        $author->rating = $rating;
+        $author->rating = $author->ratings->avg('rating');
         $author->books;
 
         return $author;

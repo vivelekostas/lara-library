@@ -11,7 +11,7 @@ class Author extends Model
 
     protected $fillable = ['name', 'biography'];
 
-    public $hidden = ['created_at', 'updated_at'];
+    public $hidden = ['created_at', 'updated_at', 'ratings'];
 
     public function books()
     {

@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Author;
-use App\Models\Book;
 use Illuminate\Database\Seeder;
 
 class RatingsSeeder extends Seeder
@@ -15,25 +14,12 @@ class RatingsSeeder extends Seeder
      */
     public function run()
     {
-        $book = Book::find(1);
-        $book->ratings()->create([
-            'rating' => null
-        ]);
-        $book = Book::find(2);
-        $book->ratings()->create([
-            'rating' => null
-        ]);
-        $book = Book::find(3);
-        $book->ratings()->create([
-            'rating' => null
-        ]);
-        $book = Book::find(4);
-        $book->ratings()->create([
-            'rating' => null
-        ]);
-        $book = Book::find(5);
-        $book->ratings()->create([
-            'rating' => null
-        ]);
+        $authors = Author::all();
+        $authors->each(function ($author) {
+            $author->ratings()->create(['rating' => null]);
+            $author->books->each(function ($book) {
+                $book->ratings()->create(['rating' => null]);
+            });
+        });
     }
 }
